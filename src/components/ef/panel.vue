@@ -7,9 +7,10 @@
                     <h1>FLINK</h1>
                     <div style="float: left;margin-right: 5px">
                         Flink集群地址:<input type="text" v-model="FlinkURL" @blur="postFlinkUrl" placeholder="请输入" style="display:inline;"></input>
-                        &nbsp;&nbsp;&nbsp;文件上传<input type="file" ref="file"  name="file"  @change="modifyHeadimg">
+<!--                        &nbsp;&nbsp;&nbsp;文件上传<input type="file" ref="file"  name="file"  @change="modifyHeadimg">-->
                     </div>
                     <div style="float: right;margin-right: 5px">
+                        <el-button type="info" plain round icon="el-icon-upload" @click="uploadfile" >文件上传</el-button>
                         <el-button type="warning" plain round @click="ShowJobs" >Jobs</el-button>
                         <el-button type="info" plain round icon="el-icon-document" @click="dataInfo" size="mini">流程信息</el-button>
                         <el-button @click="zidingyiLeiShow" >自定义类</el-button>
@@ -47,6 +48,7 @@
         <flow-info v-if="flowInfoVisible" ref="flowInfo" :data="data"></flow-info>
         <flow-help v-if="flowHelpVisible" ref="flowHelp"></flow-help>
         <zidingyi-lei v-if="zidingyiLeiVisiable" ref="zidingyi"></zidingyi-lei>
+        <uploadFile v-if="fileUploadVisible" ref="uploadFile"></uploadFile>
         <jobs v-if="JobsVisiable" ref="Jobs"></jobs>
     </div>
 
@@ -72,6 +74,7 @@
     import { getDataE } from './data_E'
     import { ForceDirected } from './force-directed'
     import zidingyiLei from '@/components/ef/zidingyiLei'
+    import uploadFile from '@/components/ef/upload.vue'
     import axios from "axios";
     import request from "../../utils/request";
 
@@ -85,6 +88,8 @@
                 easyFlowVisible: true,
                 // 控制流程数据显示与隐藏
                 flowInfoVisible: false,
+                //文件上传界面显示
+                fileUploadVisible: false,
                 //用户自定义类界面显示与隐藏
                 zidingyiLeiVisiable:false,
                 //jobs界面显示与隐藏
@@ -110,7 +115,7 @@
         // 一些基础配置移动该文件中
         mixins: [easyFlowMixin],
         components: {
-            draggable, flowNode, nodeMenu, FlowInfo, FlowNodeForm, FlowHelp,zidingyiLei,Jobs
+            draggable, flowNode, nodeMenu, FlowInfo, FlowNodeForm, FlowHelp,zidingyiLei,Jobs,uploadFile
         },
         directives: {
             'flowDrag': {
@@ -161,10 +166,14 @@
         },
         methods: {
             //文件上传获取
-             modifyHeadimg(e){
-                let file = e.target.files[0];  //这个是获取文件
-                const formdata = new FormData();//new一个formdata对象
-                formdata.append("file", file);//把文件加到formdata上面(其中名字要与接口的名字对应)
+             uploadfile(){
+                // let file = e.target.files[0];  //这个是获取文件
+                // const formdata = new FormData();//new一个formdata对象
+                // formdata.append("file", file);//把文件加到formdata上面(其中名字要与接口的名字对应)
+               this.fileUploadVisible = true;
+               this.$nextTick(function () {
+                 this.$refs.uploadFile.init()
+               })
             },
             //监听delete按键
             handleWatchDelete(e) {
