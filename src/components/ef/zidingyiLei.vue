@@ -33,7 +33,8 @@
                         <div v-for="item in L.ziduan">
                         <el-button @click="ShowZD($event,item.name)">编辑</el-button>
                         <el-button @click="DelZD($event,item.name)">删除</el-button>
-                        字段:{{item.name}}--{{item.type}}
+                        <article style="display:inline;">字段:{{item.name}}--{{item.type}}</article>
+                        <article v-if="item.type==='List'" style="display:inline;"><{{item.GenericsClass}}></article>
                     </div>
                     </el-form-item>
                     <div style="text-align:center">
@@ -59,6 +60,9 @@
                                     :value="item.state">
                                 </el-option>
                     </el-select>
+                    <el-form-item label="list类型" v-if="ZD.type==='List'">
+                        <el-input v-model="ZD.GenericsClass" placeholder="请输入"></el-input>
+                    </el-form-item>
                     </el-form-item>
                     <div style="text-align:center">
                         <el-button @click="AddZD">保存字段</el-button>
@@ -98,6 +102,7 @@
                 ZD:{
                     name:'',
                     type:'',
+                    GenericsClass:'',
                 },
                 typeList:[
                     {
@@ -174,7 +179,7 @@
                     this.Leilist.forEach((i)=>{
                         if(i.name===this.L.name){
                             s=0;
-                            i.ziduan=this.L.ziduan;
+                            i.ziduan=temp.ziduan;
                             alert(this.L.name+"类已经修改为最新值")
                             this.LClear();
                         }
@@ -201,14 +206,22 @@
                         if(i.name===this.ZD.name)
                         {
                             s=0;
-                            i.type=this.ZD.type;
+                            i.type=temp.type;
                             alert(this.ZD.name+"字段已修改为最新值");
                             this.ZDClear();
                         }
                     })}
                     if(s===1){
-                    this.L.ziduan.push(temp);
-                    this.ZDClear();
+                        if(this.ZD.type==='List'&&this.ZD.GenericsClass==='')
+                        {
+                            alert("list类型不能为空");
+                        }
+                        else
+                        {
+                            this.L.ziduan.push(temp);
+                            this.ZDClear();
+                        }
+                    
                     }
                 }
                 else{

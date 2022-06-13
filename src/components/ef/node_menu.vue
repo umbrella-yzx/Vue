@@ -118,6 +118,14 @@
                                 // 自定义覆盖样式
                                 style: {}
                             },
+                            {
+                                id: '28',
+                                type: 'YonghuZidingyi',
+                                name: '用户自定义',
+                                ico: 'el-icon-setting',
+                                // 自定义覆盖样式
+                                style: {}
+                            }
                         ]
                     },{
                         id: '3',

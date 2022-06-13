@@ -4,8 +4,13 @@
             <!--顶部工具菜单-->
             <el-col :span="24">
                 <div class="ef-tooltar">
-                    <h1>测试</h1>
+                    <h1>FLINK</h1>
+                    <div style="float: left;margin-right: 5px">
+                        Flink集群地址:<input type="text" v-model="FlinkURL" @blur="postFlinkUrl" placeholder="请输入" style="display:inline;"></input>
+                        &nbsp;&nbsp;&nbsp;文件上传<input type="file" ref="file"  name="file"  @change="modifyHeadimg">
+                    </div>
                     <div style="float: right;margin-right: 5px">
+                        <el-button type="warning" plain round @click="ShowJobs" >Jobs</el-button>
                         <el-button type="info" plain round icon="el-icon-document" @click="dataInfo" size="mini">流程信息</el-button>
                         <el-button @click="zidingyiLeiShow" >自定义类</el-button>
                         <el-button type="primary" @click="graphPost" size="mini">开始执行</el-button>
@@ -42,6 +47,7 @@
         <flow-info v-if="flowInfoVisible" ref="flowInfo" :data="data"></flow-info>
         <flow-help v-if="flowHelpVisible" ref="flowHelp"></flow-help>
         <zidingyi-lei v-if="zidingyiLeiVisiable" ref="zidingyi"></zidingyi-lei>
+        <jobs v-if="JobsVisiable" ref="Jobs"></jobs>
     </div>
 
 </template>
@@ -55,6 +61,7 @@
     import flowNode from '@/components/ef/node'
     import nodeMenu from '@/components/ef/node_menu'
     import FlowInfo from '@/components/ef/info'
+    import Jobs from '@/components/ef/jobs'
     import FlowHelp from '@/components/ef/help'
     import FlowNodeForm from './node_form'
     import lodash from 'lodash'
@@ -71,6 +78,7 @@
     export default {
         data() {
             return {
+                FlinkURL:'',
                 // jsPlumb 实例
                 jsPlumb: null,
                 // 控制画布销毁
@@ -79,6 +87,8 @@
                 flowInfoVisible: false,
                 //用户自定义类界面显示与隐藏
                 zidingyiLeiVisiable:false,
+                //jobs界面显示与隐藏
+                JobsVisiable:false,
                 // 是否加载完毕标志位
                 loadEasyFlowFinish: false,
                 flowHelpVisible: false,
@@ -100,7 +110,7 @@
         // 一些基础配置移动该文件中
         mixins: [easyFlowMixin],
         components: {
-            draggable, flowNode, nodeMenu, FlowInfo, FlowNodeForm, FlowHelp,zidingyiLei
+            draggable, flowNode, nodeMenu, FlowInfo, FlowNodeForm, FlowHelp,zidingyiLei,Jobs
         },
         directives: {
             'flowDrag': {
@@ -150,6 +160,12 @@
             document.addEventListener('keyup', that.handleWatchDelete);
         },
         methods: {
+            //文件上传获取
+             modifyHeadimg(e){
+                let file = e.target.files[0];  //这个是获取文件
+                const formdata = new FormData();//new一个formdata对象
+                formdata.append("file", file);//把文件加到formdata上面(其中名字要与接口的名字对应)
+            },
             //监听delete按键
             handleWatchDelete(e) {
                 var key = window.event ? e.keyCode : e.which;
@@ -333,6 +349,13 @@
                     }
                 }
             },
+
+          postFlinkUrl(){
+            request.post("/flinkUrl",JSON.stringify(this.FlinkURL))
+              .then((res)=> {
+                  console.log(res);
+              })
+          },
             /**
              * 拖拽结束后添加新的节点
              * @param evt
@@ -422,6 +445,8 @@
                     Map_inLei:'',
                     Map_outLei:'',
                     Map_tiaojian:'',
+                    Map_bool:"0",//映射输入方式选择
+                    Map_TypeFieldList:[],//保存字段对
                     //扁平映射
                     FlatMap_inLei:'',
                     FlatMap_outLei:'',
@@ -541,6 +566,12 @@
                 this.zidingyiLeiVisiable = true
                 this.$nextTick(function () {
                     this.$refs.zidingyi.init()
+                })
+            },
+            ShowJobs(){
+                this.JobsVisiable=true;
+                this.$nextTick(function () {
+                    this.$refs.Jobs.init()
                 })
             },
             // 加载流程图

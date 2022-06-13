@@ -227,7 +227,8 @@
                     <!-- 滚动聚合 -->
                     <div v-if="node.type=='Aggregation'">
                         <el-form-item label="聚合条件">
-                            <el-input v-model="node.Aggregation_tiaojian" placeholder="请输入"></el-input>
+<!--                             <el-input v-model="node.Aggregation_tiaojian" placeholder="请输入"></el-input> -->
+                            <textarea style="width:200px;height:100px;" v-model="node.Aggregation_tiaojian" placeholder="请输入"></textarea>
                         </el-form-item>
                         <el-form-item label="聚合类型">
                             <el-select v-model="node.Aggregation_leixing" placeholder="请选择">
@@ -257,7 +258,8 @@
 <!--                            <el-input v-model="node.Reduce_inLei" placeholder="请输入"></el-input>-->
 <!--                        </el-form-item>-->
                         <el-form-item label="聚合条件">
-                            <el-input v-model="node.Reduce_tiaojian" placeholder="请输入"></el-input>
+<!--                             <el-input v-model="node.Reduce_tiaojian" placeholder="请输入"></el-input> -->
+                          <textarea style="width:200px;height:100px;" v-model="node.Reduce_tiaojian" placeholder="请输入"></textarea>
                         </el-form-item>
                         <el-form-item>
                             <el-button   @click="SAVEnode">保存</el-button>
@@ -277,7 +279,8 @@
 <!--                            <el-input v-model="node.Filter_inLei" placeholder="请输入"></el-input>-->
 <!--                        </el-form-item>-->
                         <el-form-item label="过滤条件">
-                            <el-input v-model="node.Filter_tiaojian" placeholder="请输入"></el-input>
+<!--                             <el-input v-model="node.Filter_tiaojian" placeholder="请输入"></el-input> -->
+                          <textarea style="width:200px;height:100px;" v-model="node.Filter_tiaojian" placeholder="请输入"></textarea>
                         </el-form-item>
                         <el-form-item>
                             <el-button   @click="SAVEnode">保存</el-button>
@@ -299,9 +302,37 @@
                         <el-form-item label="输出类">
                             <el-input v-model="node.Map_outLei" placeholder="请输入"></el-input>
                         </el-form-item>
-                        <el-form-item label="映射条件">
-                            <el-input v-model="node.Map_tiaojian" placeholder="请输入"></el-input>
+                        <el-form-item label="选择条件方式">
+                            用户输入<input type="radio" v-model="node.Map_bool" name="node.Map_bool" value="0"></input>
+                            字段对添加<input type="radio" v-model="node.Map_bool" name="node.Map_bool" value="1"></input>
                         </el-form-item>
+
+                        <el-form-item label="映射条件" v-if="node.Map_bool==='0'">
+<!--                             <el-input v-model="node.Map_tiaojian" placeholder="请输入"></el-input> -->
+                            <textarea style="width:200px;height:100px;" v-model="node.Map_tiaojian" placeholder="请输入"></textarea>
+                        </el-form-item>
+                        <div v-if="node.Map_bool==='1'">
+                          <div class="ef-node-form-header">
+                            已定义映射对
+                          </div>
+                          <div v-for="item in node.Map_TypeFieldList">
+                                <el-button @click="DelMapTypeField($event,item)">删除</el-button>
+                                {{item.map_OldTypeField}}={{item.map_NewTypeField}}
+                          </div>
+                          <div class="ef-node-form-header">
+                            新定义映射对
+                          </div>
+                          <div>
+                            <article style="text-align: center">旧字段=新字段</article>
+                            <el-form-item :inline="true">
+                            <el-input v-model="linshiMapTypeField.map_OldTypeField" placeholder="请输入" style="width: 80px"></el-input>=
+                            <el-input v-model="linshiMapTypeField.map_NewTypeField" placeholder="请输入" style="width: 80px"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                              <el-button @click="AddMapTypeField">添加字段对</el-button>
+                            </el-form-item>
+                          </div>
+                        </div>
                         <el-form-item>
                             <el-button   @click="SAVEnode">保存</el-button>
 <!--                            <el-button type="primary"  @click="save">保存配置</el-button>-->
@@ -323,7 +354,8 @@
                             <el-input v-model="node.FlatMap_outLei" placeholder="请输入"></el-input>
                         </el-form-item>
                         <el-form-item label="映射条件">
-                            <el-input v-model="node.FlatMap_tiaojian" placeholder="请输入"></el-input>
+<!--                             <el-input v-model="node.FlatMap_tiaojian" placeholder="请输入"></el-input> -->
+                            <textarea style="width:200px;height:100px;" v-model="node.FlatMap_tiaojian" placeholder="请输入"></textarea>
                         </el-form-item>
                         <el-form-item>
                             <el-button   @click="SAVEnode">保存</el-button>
@@ -346,7 +378,8 @@
                             <el-input v-model="node.KeyBy_outLei" placeholder="请输入"></el-input>
                         </el-form-item>
                         <el-form-item label="分组条件">
-                            <el-input v-model="node.KeyBy_tiaojian" placeholder="请输入"></el-input>
+<!--                             <el-input v-model="node.KeyBy_tiaojian" placeholder="请输入"></el-input> -->
+                            <textarea style="width:200px;height:100px;" v-model="node.KeyBy_tiaojian" placeholder="请输入"></textarea>
                         </el-form-item>
                         <el-form-item>
                             <el-button   @click="SAVEnode">保存</el-button>
@@ -375,7 +408,8 @@
                         <div v-if="node.dataResultType==='window'">
                             {{node.dataResultWindow_data}}
                             <el-form-item >
-                            <el-button  @click="ShowDataResultWindow">显示结果</el-button>
+                              <el-button  @click="ShowDataResultWindow" >显示结果</el-button>
+<!--                              <el-button  @click="ShowDataResultWindow">显示结果</el-button>-->
                             </el-form-item>
                         </div>
                         <div v-if="node.dataResultType==='MySql'">
@@ -397,9 +431,9 @@
                             <el-form-item label="其余配置">
                                 <el-input v-model="node.dataResultMySql_exConfig" placeholder="请输入"></el-input>
                             </el-form-item>
-                            <el-form-item >
+<!--                             <el-form-item >
                             <el-button type="primary" @click="ShowDataResultMySql">显示结果</el-button>
-                            </el-form-item>
+                            </el-form-item> -->
                             <el-form-item>
                             <el-button   @click="SAVEnode">保存</el-button>
                             <el-button type="primary"  @click="saveResultJdbc">保存配置</el-button>
@@ -422,9 +456,9 @@
                             <el-form-item label="其余配置">
                                 <el-input v-model="node.dataResultCSV_exConfig" placeholder="请输入"></el-input>
                             </el-form-item>
-                            <el-form-item>
+<!--                             <el-form-item>
                                 <el-button type="primary" @click="ShowDataResultCsv">显示结果</el-button>
-                            </el-form-item>
+                            </el-form-item> -->
                             <el-form-item>
                             <el-button   @click="SAVEnode">保存</el-button>
                             <el-button type="primary"  @click="saveResultCsv">保存配置</el-button>
@@ -442,6 +476,7 @@
             </div>
         </div>
         <peizhi v-if="peizhiVisiable" ref="peizhi" :data="data"></peizhi>
+        <datasesultwindow v-if="windowDataVisible" ref="datasesultwindow" ></datasesultwindow>
     </div>
 
 </template>
@@ -451,9 +486,11 @@
     import peizhi from '@/components/ef/peizhi'
     import request from "../../utils/request";
     import panel from "./panel";
+    import datasesultwindow from '@/components/ef/dataresultwindow';
+    import FlowInfo from '@/components/ef/info';
     export default {
         components:{
-            peizhi
+            peizhi,FlowInfo,datasesultwindow
         },
         data() {
             return {
@@ -476,8 +513,15 @@
                     dataResultCSV_exConfig:'22',
                 },
                 SN_bool:0,
+                //临时映射字段对
+                linshiMapTypeField:{
+                  map_NewTypeField:'',
+                  map_OldTypeField:'',
+                },
                 //控制配置框的显示与隐藏
                 peizhiVisiable:false,
+                //控制窗口结果显示
+                windowDataVisible:false,
                 node: {},
                 line: {},
                 data: {},
@@ -851,8 +895,10 @@
                     node1.Map_inLei=node2.Map_inLei
                     node1.Map_outLei=node2.Map_outLei
                     node1.Map_tiaojian=node2.Map_tiaojian
+                    node1.Map_bool=node2.Map_bool
+                    node1.Map_TypeFieldList=node2.Map_TypeFieldList
                     //扁平映射
-                   node1.FlatMap_inLei=node2.FlatMap_inLei
+                    node1.FlatMap_inLei=node2.FlatMap_inLei
                     node1.FlatMap_outLei=node2.FlatMap_outLei
                     node1.FlatMap_tiaojian=node2.FlatMap_tiaojian
                     //分组
@@ -874,22 +920,32 @@
                     node1.dataResultCSV_path=node2.dataResultCSV_path
                     node1.dataResultCSV_exConfig=node2.dataResultCSV_exConfig
                     node1.dataResultCSV_outLei=node2.dataResultCSV_outLei
-
                     //字段
                     node1.field_id=node2.field_id
             },
             //数据结果窗口显示
+
             ShowDataResultWindow(){
-                this.DR = JSON.parse(localStorage.getItem("storeResult"));
-                this.data.nodeList.filter((node)=>{
-                    if(node.id===this.node.id){
-                        node.dataResultType='window';
-                        var temp=JSON.parse(JSON.stringify(this.DR));
-                        node.dataResultWindow_data=temp.dataResultWindow_data;
-                        this.node=node;
-                    }
-                });
-                this.DR={};
+              request.get("/Data").then((res)=> {
+                console.log(res);
+                this.DR.dataResultWindow_data = res;
+              });
+              this.windowDataVisible = true
+              this.$nextTick(function () {
+                this.$refs.datasesultwindow.init()
+              })
+
+
+                // // this.DR = JSON.parse(localStorage.getItem("storeResult"));
+                // this.data.nodeList.filter((node)=>{
+                //     if(node.id===this.node.id){
+                //         node.dataResultType='window';
+                //         var temp=JSON.parse(JSON.stringify(this.DR));
+                //         node.dataResultWindow_data=temp.dataResultWindow_data;
+                //         this.node=node;
+                //     }
+                // });
+                // this.DR={};
             },
             //数据结果Mysql显示(未绑定事件)
             ShowDataResultMySql(){
@@ -902,7 +958,40 @@
             //存放数据结果
             StoreDataResult(){
                 localStorage.setItem("storeResult",JSON.stringify(this.DR));
+            },
+
+            //删除字段对
+            DelMapTypeField(e,item)
+            {
+              this.node.Map_TypeFieldList=this.node.Map_TypeFieldList.filter((i)=>{
+                    return i.map_OldTypeField!=item.map_OldTypeField||i.map_NewTypeField!=item.map_NewTypeField
+                });
+            },
+
+            //添加字段对到列表
+            AddMapTypeField()
+            {
+              if(this.linshiMapTypeField.map_OldTypeField!=''&&this.linshiMapTypeField.map_NewTypeField!='')
+              {
+                var temp=JSON.parse(JSON.stringify(this.linshiMapTypeField));
+                this.node.Map_TypeFieldList.push(temp);
+                this.ClearMapTypeField();
+              }
+              else{
+                alert("字段对不能为空");
+              }
+            },
+
+            //清空临时字段对
+            ClearMapTypeField()
+            {
+              this.linshiMapTypeField.map_OldTypeField="";
+              this.linshiMapTypeField.map_NewTypeField="";
             }
+
+        },
+        mounted:function(){
+          this.ClearMapTypeField();
         },
 
     }
