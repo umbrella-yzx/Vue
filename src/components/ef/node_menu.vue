@@ -52,8 +52,8 @@
                                 ico: 'el-icon-setting',
                                 // 自定义覆盖样式
                                 style: {}
-                            }, 
-                            
+                            },
+
                         ]
                     },{
                         id: '2',
@@ -120,7 +120,7 @@
                             },
                             {
                                 id: '28',
-                                type: 'YonghuZidingyi',
+                                type: 'UserDefineFunction',
                                 name: '用户自定义',
                                 ico: 'el-icon-setting',
                                 // 自定义覆盖样式
@@ -144,7 +144,7 @@
                             },
                         ]
                     },
-                    
+
                 ],
                 nodeMenu: {}
             }

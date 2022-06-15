@@ -7,7 +7,7 @@
             <div class="ef-node-form-body">
                 <el-form :model="node" ref="dataForm" label-width="80px" v-show="type === 'node'">
                     <!-- 数据源 -->
-                    <div v-if="node.type=='dataResource'">
+                    <div v-if="node.type==='dataResource'">
                         <el-form-item label="数据源类型">
                             <el-select v-model="node.state" placeholder="请选择">
                                 <el-option
@@ -222,6 +222,21 @@
                           </el-form-item>
 
                         </div>
+
+                      <div v-if="node.state=='Any'">
+                        <el-form-item label="数据源名称">
+                          <el-input v-model="node.udf_source_jar" placeholder="请输入数据源Jar地址"></el-input>
+                        </el-form-item>
+                        <el-form-item label="入口类">
+                          <el-input v-model="node.udf_source_entry_class" placeholder="请输入"></el-input>
+                        </el-form-item>
+                        <el-form-item label="数据源解释类">
+                          <el-input  v-model="node.udf_source_outClass" placeholder="请输入"></el-input>
+                        </el-form-item>
+                      </div>
+                      <el-form-item>
+                        <el-button   @click="SAVEnode">保存</el-button>
+                      </el-form-item>
                     </div>
 
                     <!-- 滚动聚合 -->
@@ -393,8 +408,36 @@
 <!--                            导入目标-{{SN.type}}:{{SN.id}}-->
 <!--                        </el-form-item>-->
                     </div>
+                    <!-- 用户自定义数据处理 -->
+                    <div v-if="node.type==='UserDefineFunction'">
+<!--                        <el-form-item label="输入类">-->
+<!--                            <el-input v-model="node.KeyBy_inLei" placeholder="请输入"></el-input>-->
+<!--                        </el-form-item>-->
+                        <el-form-item label="数据处理名称">
+                          <el-input v-model="node.udf_function_jar" placeholder="请输入数据处理Jar地址"></el-input>
+                        </el-form-item>
+                        <el-form-item label="入口类">
+                          <el-input v-model="node.udf_function_entry_class" placeholder="请输入"></el-input>
+                        </el-form-item>
+                        <el-form-item label="处理类型">
+                          <el-input v-model="node.udf_function_type" placeholder="请输入flink支持处理类型，如map、flatmap"></el-input>
+                        </el-form-item>
+                        <el-form-item label="数据处理解释类">
+                          <el-input  v-model="node.udf_function_outClass" placeholder="请输入"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                          <el-button   @click="SAVEnode">保存</el-button>
+                        </el-form-item>
+<!--                        <el-form-item>-->
+<!--                            <el-button  @click="show">配置信息</el-button>-->
+<!--                            <el-button  @click="daoruNode">导入</el-button>-->
+<!--                        </el-form-item>-->
+<!--                        <el-form-item>-->
+<!--                            导入目标-{{SN.type}}:{{SN.id}}-->
+<!--                        </el-form-item>-->
+                    </div>
                     <!-- 数据结果 -->
-                    <div v-if="node.type=='dataResult'">
+                    <div v-if="node.type==='dataResult'">
                         <el-form-item label="数据结果输入类型">
                             <el-select v-model="node.dataResultType" placeholder="请选择">
                                 <el-option
@@ -408,8 +451,7 @@
                         <div v-if="node.dataResultType==='window'">
                             {{node.dataResultWindow_data}}
                             <el-form-item >
-                              <el-button  @click="ShowDataResultWindow" >显示结果</el-button>
-<!--                              <el-button  @click="ShowDataResultWindow">显示结果</el-button>-->
+                              <el-button   @click="SAVEnode">保存</el-button>
                             </el-form-item>
                         </div>
                         <div v-if="node.dataResultType==='MySql'">
@@ -882,6 +924,10 @@
                     node1.kafka_topic =node2.kafka_topic
                     node1.kafka_bootstrapServers =node2.kafka_bootstrapServers
                     node1.kafka_groupId =node2.kafka_groupId
+                    //Any
+                    node1.udf_source_jar =node2.udf_source_jar
+                    node1.udf_source_entry_class =node2.udf_source_entry_class
+                    node1.udf_source_outClass =node2.udf_source_outClass
                     //滚动聚合
                     node1.Aggregation_tiaojian=node2.Aggregation_tiaojian
                     node1.Aggregation_leixing=node2.Aggregation_leixing
@@ -905,6 +951,11 @@
                     node1.KeyBy_inLei=node2.KeyBy_inLei
                     node1.KeyBy_outLei=node2.KeyBy_outLei
                     node1.KeyBy_tiaojian=node2.KeyBy_tiaojian
+                    //用户自定义数据处理类
+                    node1.udf_function_jar =node2.udf_function_jar
+                    node1.udf_function_entry_class =node2.udf_function_entry_class
+                    node1.udf_function_outClass =node2.udf_function_outClass
+                    node1.udf_function_type =node2.udf_function_type
                     //数据结果
                     node1.dataResultType=node2.dataResultType
                     //数据结果Windows

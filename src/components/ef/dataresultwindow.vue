@@ -5,9 +5,9 @@
             width="70%"
     >
         <div>
-            {{jieguo}}
+          <span style="white-space: pre-wrap;">{{jieguo}}</span>
         </div>
-        
+
     </el-dialog>
 </template>
 
@@ -19,7 +19,7 @@
 
     export default {
         props: {
-            data: Object,
+            data: String,
         },
         data() {
             return {
@@ -33,6 +33,7 @@
         methods: {
             init() {
                 this.dialogVisible = true;
+                this.jieguo = this.data;
             }
         }
     }

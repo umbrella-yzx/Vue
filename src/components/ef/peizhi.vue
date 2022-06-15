@@ -42,6 +42,11 @@
               <article style="display:inline;">kafka_bootstrapServers:{{item.kafka_bootstrapServers}}&nbsp;&nbsp;&nbsp;</article>
               <article style="display:inline;">kafka_groupId:{{item.kafka_groupId}}&nbsp;&nbsp;&nbsp;</article>
             </div>
+            <div v-if="item.state==='Any'">
+              <article style="display:inline;">数据源名称:{{item.udf_source_jar}}&nbsp;&nbsp;&nbsp;</article>
+              <article style="display:inline;">入口类:{{item.udf_source_entry_class}}&nbsp;&nbsp;&nbsp;</article>
+              <article style="display:inline;">数据源解释类:{{item.udf_source_outClass}}&nbsp;&nbsp;&nbsp;</article>
+            </div>
           </div>
           <!-- 滚动聚合 -->
           <div v-if="item.type==='Aggregation'">
@@ -70,10 +75,17 @@
             <article style="display:inline;">输出类:{{item.KeyBy_outLei}}&nbsp;&nbsp;&nbsp;</article>
             <article style="display:inline;">映射条件:{{item.KeyBy_tiaojian}}&nbsp;&nbsp;&nbsp;</article>
           </div>
+          <!-- 用户自定义数据处理 -->
+          <div v-if="item.type==='UserDefineFunction'">
+            <article style="display:inline;">数据源名称:{{item.udf_function_jar}}&nbsp;&nbsp;&nbsp;</article>
+            <article style="display:inline;">入口类:{{item.udf_function_entry_class}}&nbsp;&nbsp;&nbsp;</article>
+            <article style="display:inline;">处理类型:{{item.udf_function_type}}&nbsp;&nbsp;&nbsp;</article>
+            <article style="display:inline;">数据源解释类:{{item.udf_function_outClass}}&nbsp;&nbsp;&nbsp;</article>
+          </div>
           <!-- 数据结果 -->
           <div v-if="item.type==='dataResult'">
             <!-- MySql -->
-            <div v-if="node.dataResultType==='MySql'">
+            <div v-if="item.dataResultType==='MySql'">
               <article style="display:inline;">数据库url:{{item.dataResultMySql_url}}&nbsp;&nbsp;&nbsp;</article>
               <article style="display:inline;">用户名:{{item.dataResultMySql_userName}}&nbsp;&nbsp;&nbsp;</article>
               <article style="display:inline;">连接的表名:{{item.dataResultMySql_tableName}}&nbsp;&nbsp;&nbsp;</article>
@@ -81,7 +93,7 @@
               <article style="display:inline;">其余配置:{{item.dataResultMySql_exConfig}}&nbsp;&nbsp;&nbsp;</article>
               <article style="display:inline;">数据配置项:{{item.dataResultMySql_dataPeizhi}}&nbsp;&nbsp;&nbsp;</article>
             </div>
-            <div v-if="node.dataResultType==='CSV'">
+            <div v-if="item.dataResultType==='CSV'">
               <article style="display:inline;">文件路径:{{item.dataResultCSV_path}}&nbsp;&nbsp;&nbsp;</article>
               <article style="display:inline;">输入类:{{item.dataResultCSV_outLei}}&nbsp;&nbsp;&nbsp;</article>
               <article style="display:inline;">其余配置:{{item.dataResultCSV_exConfig}}&nbsp;&nbsp;&nbsp;</article>
@@ -166,7 +178,7 @@
               for (let i = 0; i < res.length; i++) {
                 var node = {};
                 node.type ='dataResult';
-                node.dataResultType = "MySql";
+                node.dataResultType = 'MySql';
                 node.field_id = res[i].id;
                 node.id = this.getUUID();
                 node.dataResultMySql_url = res[i].dburl;
@@ -176,8 +188,8 @@
                 node.dataResultMySql_exConfig = res[i].exConfig;
                 tmpST.push(node);
               }
-              // console.log(JSON.stringify(this.ST));
               this.ST = tmpST;
+              // console.log(JSON.stringify(this.ST));
             });
           } ,
 

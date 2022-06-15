@@ -17,7 +17,8 @@
                         <el-button @click="ShowL($event,item.name)">编辑</el-button>
                         <el-button @click="DelL($event,item.name)">删除</el-button>
                         类:{{item.name}}-----
-                        <article style="display:inline;" v-for="iz in item.ziduan">{{iz.name}}:{{iz.type}}&nbsp;&nbsp;&nbsp;</article>
+                      <article style="display:inline;" v-for="iz in item.ziduan" v-if="iz.type!='List'">{{iz.name}}:{{iz.type}}&nbsp;&nbsp;&nbsp;</article>
+                      <article style="display:inline;" v-for="iz in item.ziduan" v-if="iz.type==='List'">{{iz.name}}:{{iz.type}}<{{iz.GenericsClass}}>&nbsp;&nbsp;&nbsp;</article>
                     </div>
                 </el-form>
             </div>
@@ -221,7 +222,7 @@
                             this.L.ziduan.push(temp);
                             this.ZDClear();
                         }
-                    
+
                     }
                 }
                 else{

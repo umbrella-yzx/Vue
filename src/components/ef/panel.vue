@@ -6,7 +6,8 @@
                 <div class="ef-tooltar">
                     <h1>FLINK</h1>
                     <div style="float: left;margin-right: 5px">
-                        Flink集群地址:<input type="text" v-model="FlinkURL" @blur="postFlinkUrl" placeholder="请输入" style="display:inline;"></input>
+                        Flink任务名称:<input id="nameInput" type="text" v-model="FlinkName" @blur="postFlinkName" placeholder="请输入" style="display:inline;"></input>
+                        Flink集群地址:<input id="urlInput" type="text" v-model="FlinkURL" @blur="postFlinkUrl" placeholder="请输入" style="display:inline;"></input>
 <!--                        &nbsp;&nbsp;&nbsp;文件上传<input type="file" ref="file"  name="file"  @change="modifyHeadimg">-->
                     </div>
                     <div style="float: right;margin-right: 5px">
@@ -81,6 +82,7 @@
     export default {
         data() {
             return {
+                FlinkName:'',
                 FlinkURL:'',
                 // jsPlumb 实例
                 jsPlumb: null,
@@ -365,6 +367,13 @@
                   console.log(res);
               })
           },
+
+          postFlinkName(){
+            request.post("/flinkJobName",JSON.stringify(this.FlinkName))
+              .then((res)=> {
+                console.log(res);
+              })
+          },
             /**
              * 拖拽结束后添加新的节点
              * @param evt
@@ -441,6 +450,10 @@
                     kafka_topic:'',
                     kafka_bootstrapServers:'',
                     kafka_groupId:'',
+                    //Any
+                    udf_source_jar:'',
+                    udf_source_entry_class:'',
+                    udf_source_outClass:'',
                     //滚动聚合
                     Aggregation_tiaojian:'',
                     Aggregation_leixing:'',
@@ -464,6 +477,11 @@
                     KeyBy_inLei:'',
                     KeyBy_outLei:'',
                     KeyBy_tiaojian:'',
+                    //用户自定义数据处理
+                    udf_function_jar:'',
+                    udf_function_entry_class:'',
+                    udf_function_outClass:'',
+                    udf_function_type:'',
                     //数据结果
                     dataResultType:'',
                     //数据结果Windows
@@ -680,5 +698,25 @@
 }
 #efContainer {
     background-color: #DCFCE7;
+}
+#urlInput{
+  outline-style: none ;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 7px 7px;
+  width: 200px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: "Microsoft soft",serif;
+}
+#nameInput{
+    outline-style: none ;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 7px 7px;
+  width: 200px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: "Microsoft soft",serif;
 }
 </style>
