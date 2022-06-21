@@ -74,7 +74,7 @@
                     <input type="number" v-model="i.cycle_minute" style="width:50px">minute
                     <input type="number" v-model="i.cycle_second" style="width:50px">second
                     </td>
-                    <button @click="qidong($event,i.Jid)">启动</button>
+                      <button @click="showMessage($event,i.JobName)">显示结果</button>
                 </tr>
                 </table>
             </div>

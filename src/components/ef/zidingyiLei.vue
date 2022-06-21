@@ -259,7 +259,7 @@
                 this.Leilist=this.Leilist.filter((i)=>{
                     return i.name!=name
                 });
-                this.store();
+                this.Store();
             },
             //存储类
             Store(){
